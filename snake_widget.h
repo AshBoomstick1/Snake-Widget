@@ -15,8 +15,8 @@ public:
     ~Snake_widget() override;
 
     const int scale = 40;
-    int domain = width()/scale + 1;
-    int range = height()/scale + 1;
+    int domain = width()/scale - 1;
+    int range = height()/scale - 1;
 
     struct Pixel {
         int x;
