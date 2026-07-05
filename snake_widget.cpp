@@ -73,7 +73,7 @@ char Snake_widget::get_direction(int idx)
 
     if (snake_part1.x == snake_part2.x)
     {
-        if (snake_part1.y > snake_part2.y)
+        if (snake_part1.y < snake_part2.y)
         {
             return 'n';
         }
@@ -97,70 +97,45 @@ char Snake_widget::get_direction(int idx)
 
 void Snake_widget::paintEvent(QPaintEvent *)
 {
-
-    //NEXT TIME OPTIMIZE TO DRAW LINES FOR SNAKE INSTEAD OF PIXELS
     QPainter p(this);
     if (scale > 5)
     {
         p.setPen(m_pixels[0].color);
         p.setBrush(m_pixels[0].color);
-        p.drawRect(QRect(m_pixels[0].x*scale + scale/5, m_pixels[0].y*scale + scale/5, scale - scale/5, scale - scale/5));
+        p.drawRect(QRect(m_pixels[0].x*scale + scale/4, m_pixels[0].y*scale + scale/4, scale - scale/4*2, scale - scale/4*2));
 
         p.setPen(m_pixels[1].color);
         p.setBrush(m_pixels[1].color);
 
         int snake_idx = 0;
-        std::cout << "FRAME\n";
         while (snake_idx < m_pixels.size() - 2)
         {
-            std::cout << "MAKING A LINE\n";
             char current_line_direction = get_direction(snake_idx);
-            std::vector<int> line_points = {snake_idx, snake_idx};
+
+            std::vector<Pixel> line_points = {snake_list[snake_idx], snake_list[snake_idx]};
             while (snake_idx < snake_list.size() - 1 && current_line_direction == get_direction(snake_idx))
             {
                 snake_idx++;
-                line_points[1] = snake_idx;
+                line_points[1] = snake_list[snake_idx];
             }
 
-            int line_points_difference = line_points[1] - line_points[0];
+            Pixel point1 = line_points[0];
+            Pixel point2 = line_points[1];
 
-            //picks which point is farther to the top-left and should be the anchor for the print
-            //still need to make it figure out wether to print down or right after it gets to each case.
-            if (snake_list[line_points[0]].x == snake_list[line_points[1]].x || snake_list[line_points[0]].y == snake_list[line_points[1]].y)
+            switch (current_line_direction)
             {
-                if (snake_list[line_points[0]].x == snake_list[line_points[1]].x)
-                {
-                    if (snake_list[line_points[0]].y > snake_list[line_points[1]].y)
-                    {
-                        p.drawRect(QRect(m_pixels[line_points[1] + 1].x*scale + scale/5, m_pixels[line_points[1] + 1].y*scale + scale/5, scale - scale/5, scale * line_points_difference));
-                    }
-                    else
-                    {
-                        p.drawRect(QRect(m_pixels[line_points[0] + 1].x*scale + scale/5, m_pixels[line_points[0] + 1].y*scale + scale/5, scale - scale/5, scale * line_points_difference));
-                    }
-                }
-                else
-                {
-                    if (snake_list[line_points[0]].x > snake_list[line_points[1]].x)
-                    {
-                        p.drawRect(QRect(m_pixels[line_points[1] + 1].x*scale + scale/5, m_pixels[line_points[1] + 1].y*scale + scale/5, scale * line_points_difference, scale - scale/5));
-                    }
-                    else
-                    {
-                        p.drawRect(QRect(m_pixels[line_points[0] + 1].x*scale + scale/5, m_pixels[line_points[0] + 1].y*scale + scale/5, scale * line_points_difference, scale - scale/5));
-                    }
-                }
-            }
-            else
-            {
-                if (snake_list[line_points[0]].x > snake_list[line_points[1]].x && snake_list[line_points[0]].y > snake_list[line_points[1]].y)
-                {
-                    p.drawRect(QRect(m_pixels[line_points[1] + 1].x*scale + scale/5, m_pixels[line_points[1] + 1].y*scale + scale/5, scale - scale/5, scale - scale/5));
-                }
-                else
-                {
-                    p.drawRect(QRect(m_pixels[line_points[0] + 1].x*scale + scale/5, m_pixels[line_points[0] + 1].y*scale + scale/5, scale - scale/5, scale - scale/5));
-                }
+                case 'n':
+                    p.drawRect(QRect(QPoint(point1.x * scale + scale/5, point1.y * scale + scale/5), QPoint(point2.x * scale + scale - scale/5, point2.y * scale + scale - scale/5)));
+                    break;
+                case 's':
+                    p.drawRect(QRect(QPoint(point1.x * scale + scale/5, point1.y * scale + scale - scale/5), QPoint(point2.x * scale + scale - scale/5, point2.y * scale + scale/5)));
+                    break;
+                case 'e':
+                    p.drawRect(QRect(QPoint(point1.x * scale + scale - scale/5, point1.y * scale + scale/5), QPoint(point2.x * scale + scale/5, point2.y * scale + scale - scale/5)));
+                    break;
+                case 'w':
+                    p.drawRect(QRect(QPoint(point1.x * scale + scale/5, point1.y * scale + scale/5), QPoint(point2.x * scale + scale - scale/5, point2.y * scale + scale - scale/5)));
+                    break;
             }
         }
     }
@@ -348,6 +323,6 @@ void Snake_widget::next_frame()
 
         print_pixel(snake_list[0], false);
     }
-    delay(500);
+    delay(750);
     next_frame();
 }
