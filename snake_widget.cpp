@@ -132,18 +132,18 @@ void Snake_widget::paintEvent(QPaintEvent *)
 
             switch (current_line_direction)
             {
-                case 'n':
-                    p.drawRect(QRect(QPoint(point1.x * scale + scale/margin, point1.y * scale + scale/margin), QPoint(point2.x * scale + scale - scale/margin, point2.y * scale + scale - scale/margin)));
-                    break;
-                case 's':
-                    p.drawRect(QRect(QPoint(point1.x * scale + scale/margin, point1.y * scale + scale - scale/margin), QPoint(point2.x * scale + scale - scale/margin, point2.y * scale + scale/margin)));
-                    break;
-                case 'e':
-                    p.drawRect(QRect(QPoint(point1.x * scale + scale - scale/margin, point1.y * scale + scale/margin), QPoint(point2.x * scale + scale/margin, point2.y * scale + scale - scale/margin)));
-                    break;
-                case 'w':
-                    p.drawRect(QRect(QPoint(point1.x * scale + scale/margin, point1.y * scale + scale/margin), QPoint(point2.x * scale + scale - scale/margin, point2.y * scale + scale - scale/margin)));
-                    break;
+            case 'n':
+                p.drawRect(QRect(QPoint(point1.x * scale + scale/margin, point1.y * scale + scale/margin), QPoint(point2.x * scale + scale - scale/margin, point2.y * scale + scale - scale/margin)));
+                break;
+            case 's':
+                p.drawRect(QRect(QPoint(point1.x * scale + scale/margin, point1.y * scale + scale - scale/margin), QPoint(point2.x * scale + scale - scale/margin, point2.y * scale + scale/margin)));
+                break;
+            case 'e':
+                p.drawRect(QRect(QPoint(point1.x * scale + scale - scale/margin, point1.y * scale + scale/margin), QPoint(point2.x * scale + scale/margin, point2.y * scale + scale - scale/margin)));
+                break;
+            case 'w':
+                p.drawRect(QRect(QPoint(point1.x * scale + scale/margin, point1.y * scale + scale/margin), QPoint(point2.x * scale + scale - scale/margin, point2.y * scale + scale - scale/margin)));
+                break;
             }
         }
     }
@@ -316,18 +316,18 @@ void Snake_widget::next_frame()
 
     switch(direction)
     {
-        case 'n':
-            new_head = {snake_list[0].x, snake_list[0].y - 1, Qt::green};
-            break;
-        case 's':
-            new_head = {snake_list[0].x, snake_list[0].y + 1, Qt::green};
-            break;
-        case 'e':
-            new_head = {snake_list[0].x + 1, snake_list[0].y, Qt::green};
-            break;
-        case 'w':
-            new_head = {snake_list[0].x - 1, snake_list[0].y, Qt::green};
-            break;
+    case 'n':
+        new_head = {snake_list[0].x, snake_list[0].y - 1, Qt::green};
+        break;
+    case 's':
+        new_head = {snake_list[0].x, snake_list[0].y + 1, Qt::green};
+        break;
+    case 'e':
+        new_head = {snake_list[0].x + 1, snake_list[0].y, Qt::green};
+        break;
+    case 'w':
+        new_head = {snake_list[0].x - 1, snake_list[0].y, Qt::green};
+        break;
     }
 
 
@@ -361,6 +361,6 @@ void Snake_widget::next_frame()
 
         print_pixel(snake_list[0], false);
     }
-    delay(1000);
+    delay(100);
     next_frame();
 }
